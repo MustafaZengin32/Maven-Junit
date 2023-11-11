@@ -1,4 +1,4 @@
-package junitday01;
+package junitday01AnotationsAssertations;
 
 import org.junit.Assert;
 import org.junit.Test;

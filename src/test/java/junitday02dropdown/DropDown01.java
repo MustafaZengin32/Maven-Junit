@@ -25,9 +25,11 @@ public class DropDown01 {
     //bu ozelligi test icin Select objesi olustururuz
     //index value visible ozelliklerinde option lari secebiliriz
 
+
+
+
     @Before
     public void setup(){
-
         WebDriverManager.chromedriver().setup();
 
         driver=new ChromeDriver();
@@ -36,85 +38,111 @@ public class DropDown01 {
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
 
+        driver.get("https://testcenter.techproeducation.com/index.php?page=dropdown");
     }
 
     @Test
-    public void test01() throws InterruptedException {
-
-        driver.get("https://testcenter.techproeducation.com/index.php?page=dropdown");
-
-        Thread.sleep(3000);
-
-        //Doğum yılını ayını günün şu şekilde seçin  ==>  2015 January 11
-
-        WebElement dropdownyear=driver.findElement(By.id("year"));
-
-        Select year=new Select(dropdownyear);
-
-        //year.selectByIndex(8);//select altindaki option lar 0 dan baslar ilk eleman index i 0 dir
-        //year.selectByValue();////value="2023">2023< buradaki value degeri ortadakidir
-        year.selectByVisibleText("2015");//value="2023">2023< burada visibale degeri en sondakidir
-                                         //bazen value degerinden farkli olabilir kontrol et
-
-        Thread.sleep(3000);
-
-        Assert.assertEquals("2015",year.getFirstSelectedOption().getText());
-
-        //year.getFirstSelectedOption(); //Bu islemle secilen degeri test ederiz
-
-        WebElement dropdownmonth=driver.findElement(By.id("month"));
-
-        //Sayet bu sekilde alamaz isek JavascriptExecutor ve executeScript ile almayi deneriz
-
-        //WebElement dropdownmonth = (WebElement) ((JavascriptExecutor) driver).executeScript("return document.getElementById('month');");
-
-        Select month=new Select(dropdownmonth);
-
-        month.selectByValue("0");
-
-        Thread.sleep(3000);
-
-        WebElement dropdownday=driver.findElement(By.id("day"));
-
-        Select day=new Select(dropdownday);
-
-        day.selectByIndex(10);
-
-        Thread.sleep(3000);
+    public void dropDownTest01() throws InterruptedException {
 
 
+        Thread.sleep(5000);
+        /*
+        https://testcenter.techproeducation.com/index.php?page=dropdown
+        Doğum yılını ayını günün şu şekilde seçin  ==>  2015 January 11
+         */
+
+        //year ==> 2015
+        //1 web element olustur
+        WebElement ddYear= driver.findElement(By.id("year"));
+        //2 Select class'ından ddyear web elementi ile obje olustur.
+        Select yearSlct=new Select(ddYear);
+        //3. yearSlct objesi ile selectByVisibleText() methodu ile dropdown sectik
+        yearSlct.selectByVisibleText("2015");
+
+        /*
+        WebElement actualselectYear=yearSlct.getFirstSelectedOption();
+        String actualYear=actualselectYear.getText();
+        */
+        String actualYear1=yearSlct.getFirstSelectedOption().getText();
+
+        Assert.assertEquals("2015", actualYear1);
+
+        //month ==> January
+        //1 web element olustur
+        WebElement month=driver.findElement(By.id("month"));
+        //2 Select Class indan month web elementi ile obje olustur
+        Select monthSlct=new Select(month);
+        //3 monthSlct objesi selectByValue methodu ile dropdown sectik
+        monthSlct.selectByValue("0");
+
+
+        //day ==> 11
+        WebElement day=driver.findElement(By.xpath("//select[@id='day']"));
+        Select daySlct=new Select(day);
+        daySlct.selectByIndex(10);
 
     }
 
-    @Ignore
+
     @Test
-    public void test02(){
+    public void stateSelection(){
 
-        //Select deki tum elemanlari yazdirma getoptions
 
-        driver.get("https://testcenter.techproeducation.com/index.php?page=dropdown");
+        WebElement state= driver.findElement(By.xpath("//select[@id='state']"));
+        Select stateSlct=new Select(state);
+        List<WebElement> stateOptions= stateSlct.getOptions();
 
-        WebElement dropdownstate=driver.findElement(By.id("state"));
-
-        Select state=new Select(dropdownstate);
-
-        List<WebElement> stateoptions = state.getOptions();
-
-        for (WebElement w : stateoptions) {
-
-            System.out.println(w.getText());
+        for (WebElement w : stateOptions){
+            System.out.print(w.getText()+", ");
         }
-
-        System.out.println(stateoptions.size());
-
+        System.out.println("----------------------------------------------------------------------------");
+        System.out.println("Select a State dahil dropdown'daki Eyalet Sayisi "+stateOptions.size());
     }
 
 
     @After
-    public void teardown(){
-
+    public void teardown() throws InterruptedException {
+        Thread.sleep(5000);
         driver.close();
     }
 
+    public void selectDropDown(WebElement dd, String text){
+        /*
+         WebElement ddYear= driver.findElement(By.id("year"));
+        //2 Select class'ından ddyear web elementi ile obje olustur.
+        Select yearSlct=new Select(ddYear);
+        //3. yearSlct objesi ile selectByVisibleText() methodu ile dropdown sectik
+        yearSlct.selectByVisibleText("2015");
+         */
+
+        List <WebElement> allOptionsDD = dd.findElements(By.tagName("option"));
+        for (WebElement w : allOptionsDD){
+            //System.out.println(w.getText());
+            if(w.getText().equals(text)){
+                w.click();
+                break;
+            }
+        }
+    }
+
+    @Test
+    public void methodDenemeTesti() throws InterruptedException {
+
+        Thread.sleep(5000);
+        //State Selection
+        selectDropDown(driver.findElement(By.xpath("//select[@id='state']")), "Colorado");
+
+        //Doğum yılını ayını günün şu şekilde seçin  ==>  2015 January 12
+
+        //year ==> 2015
+        selectDropDown(driver.findElement(By.xpath("//select[@id='year']")), "2015");
+        //year dropdown web elementini locate ettim , den sonra ise secmek istediğim degeri String olrak yazdım
+
+        //ay ==> January
+        selectDropDown(driver.findElement(By.id("month")),  "January");
+
+        //gun ==> 12
+        selectDropDown(driver.findElement(By.xpath("//select[@id='day']")), "12");
+    }
 
 }
