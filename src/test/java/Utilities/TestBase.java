@@ -8,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class TestBase {
 
@@ -48,6 +50,19 @@ public abstract class TestBase {
             throw new RuntimeException(e);
         }
     }
+
+    //Multiple Window
+    //- windowNumber 0 dan baslar
+    //- index numarasini parametre olarak alir.
+    //ve o indexli pencereye gecis yapar
+
+    public static void switchToWindow(int windowNumber){
+        List<String> list=new ArrayList<>(driver.getWindowHandles());
+
+        driver.switchTo().window(list.get(windowNumber));
+    }
+
+
 
 
 
