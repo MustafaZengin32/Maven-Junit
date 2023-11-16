@@ -3,6 +3,7 @@ package Utilities;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -33,11 +34,24 @@ public abstract class TestBase {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
     }
 
+    @Ignore
     @After
     public void teardown() throws InterruptedException {
         Thread.sleep(5000);
         driver.close();
     }
+
+    public void wait(int a){
+        try {
+            Thread.sleep(a*1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
 
 
 }
