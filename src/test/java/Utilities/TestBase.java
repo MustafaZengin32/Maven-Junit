@@ -36,7 +36,7 @@ public abstract class TestBase {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
     }
 
-    @Ignore
+
     @After
     public void teardown() throws InterruptedException {
         Thread.sleep(5000);
