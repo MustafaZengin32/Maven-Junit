@@ -5,10 +5,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.io.File;
@@ -41,7 +38,7 @@ public abstract class TestBase {
 
         driver.manage().window().maximize();
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
     }
 
 
@@ -115,6 +112,56 @@ public abstract class TestBase {
         }
 
     }
+
+    //SCROLLINTOVIEWJS
+    public void scrollIntoViewJS(WebElement element){
+        JavascriptExecutor js=(JavascriptExecutor)driver;
+        js.executeScript("arguments[0].scrollIntoView(true);",element);
+    }
+
+    //SAYFANIN EN ALTINA IN
+    //    Bu method ile sayfanin en altina inebiliriz
+    public void scrollEndJS(){
+        JavascriptExecutor js=(JavascriptExecutor)driver;
+        js.executeScript(("window.scrollTo(0,document.body.scrollHeight)"));
+
+    }
+
+    //JS EXECUTER ILE SAYFANIN EN USTUNE CIKMA
+    public void scrollTopJS(){
+        JavascriptExecutor js=(JavascriptExecutor)driver;
+        js.executeScript(("window.scrollTo(0,-document.body.scrollHeight)"));
+
+    }
+
+    //JS EXECUTER ILE ELEMANA TIKLAMA
+    public void clickJs(WebElement element){
+        JavascriptExecutor js=(JavascriptExecutor)driver;
+        js.executeScript("arguments[0].click();",element);
+    }
+
+
+    //JS EXECUTER ILE LOCATE ID OLAN WEB ELEMETE TEXT YAZDIRMA
+
+    public void setAttributeValueJs(String id, String text){
+        JavascriptExecutor js=(JavascriptExecutor)driver;
+        //js.executeScript("document.getElementById('OriginInput').setAttribute('value','Istanbul')");
+
+        js.executeScript("document.getElementById(' "+id+" ').setAttribute('value','"+text+"')");
+    }
+
+    //JS ILE ID OLAN WEB ELEMENTIN GET VALUE ALMA (GET TEXT GIBI)
+
+    public void getValueByJS(String idOfElement) {
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        String text = js.executeScript("return document.getElementById('" + 			idOfElement + "').value").toString();
+        //driver.findElementById() ==>  javascriptExecutorversiyonu
+        System.out.println("Kutudaki value: " + text);
+    }
+
+
 
 
 
