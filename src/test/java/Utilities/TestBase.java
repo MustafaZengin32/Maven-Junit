@@ -1,10 +1,10 @@
 package Utilities;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import junitday15log4j.Log4J01TestResultLog;
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -15,6 +15,11 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ExtendWith(Log4J01TestResultLog.class)//Bunu eklersek TestResult sinifina ulasirim , buradaki tum testler icin TestResultdaki
+//methodlar kullanilir //Yukaridaki 3 unu Log4J icin yaptik
 
 public abstract class TestBase {
 
@@ -29,7 +34,7 @@ public abstract class TestBase {
 
     public static WebDriver driver ;
 
-    @Before
+    @BeforeAll
     public void setUp(){
 
         WebDriverManager.chromedriver().setup();
@@ -42,7 +47,7 @@ public abstract class TestBase {
     }
 
 
-    @After
+    @AfterAll
     public void teardown() throws InterruptedException {
         Thread.sleep(5000);
         driver.close();
