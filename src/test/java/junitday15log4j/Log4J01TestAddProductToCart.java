@@ -24,14 +24,14 @@ public class Log4J01TestAddProductToCart extends Log4J01TestBase{
 
         searchbox.sendKeys("Laptop"+ Keys.ENTER);
 
+        wait(5);
+
         WebElement results=driver.findElement(By.xpath("//span[@class='a-color-state a-text-bold']"));
 
-        String yazi="Laptop";
+        String expected1="Laptop";
+        String actual1=results.getText();
 
-        Assert.assertTrue(yazi.contains(results.getText()));
-
-
-
+        Assert.assertTrue(actual1.contains(expected1));
         //Amazon a git ve search box a Laptop yaz ve arat
 
     }

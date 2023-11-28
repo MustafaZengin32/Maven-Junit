@@ -1,6 +1,8 @@
 package junitday15log4j;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
@@ -26,7 +28,7 @@ public abstract class Log4J01TestBase {
 
     public static WebDriver driver ;
 
-    @BeforeAll
+    @Before
     public void setUp(){
 
         WebDriverManager.chromedriver().setup();
@@ -41,8 +43,9 @@ public abstract class Log4J01TestBase {
     }
 
 
-    @AfterAll
+    @After
     public void teardown() throws InterruptedException {
+
         Thread.sleep(5000);
         driver.close();
     }
